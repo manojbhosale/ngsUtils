@@ -38,8 +38,7 @@ Prerequisite: **Java 1.8** or **_higher_**
 
 8. If you have miltiple files to compare then use "Multiple files" option. the input is the tab separated mapping file of VCFs to caompare like below.
 create comparison.txt with below content. File paths need to be **_absolute paths_** of the VCFs.
+
 c:\one.vcf c:\two.vcf
-
 c:\a.vcf c:\b.vcf
-
 c:\x.vcf c:\y.vcf
