@@ -15,12 +15,12 @@ This is an attempt to tackle the daily tasks in NGS data analysis. This tool is 
 Prerequisite: **Java 1.8** or **_higher_**
 
 Steps:
-	.. Right click on the jar file and open with java
-	.. In **"VCF comparator"** tab select the VCF 1, VCF 2 files to compare.
-	.. Click **"Compare"**
-	.. Based on size of the VCF files it will take time to compare the VCF. in the mean time the UI will _freeze_ as its a single threaded application.
-	.. After comparison is done the UI will update with the comparison results as displayed in below screenshot
-	.. If you are interested to find out the actual mismatching and common variants in VCF format visit "C:\gatKAutomator\comparisonResults" directory of your computer, not to mentione you need to have read/write access to this location.
+..1. Right click on the jar file and open with java
+..2. In **"VCF comparator"** tab select the VCF 1, VCF 2 files to compare.
+..3. Click **"Compare"**
+..4. Based on size of the VCF files it will take time to compare the VCF. in the mean time the UI will _freeze_ as its a single threaded application.
+..5. After comparison is done the UI will update with the comparison results as displayed in below screenshot
+..6. If you are interested to find out the actual mismatching and common variants in VCF format visit "C:\gatKAutomator\comparisonResults" directory of your computer, not to mentione you need to have read/write access to this location.
 	
 The result VCF are named in following way,
 	+Common variants in both vcf: *_common.vcf
