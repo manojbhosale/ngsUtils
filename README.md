@@ -40,5 +40,7 @@ Prerequisite: **Java 1.8** or **_higher_**
 create comparison.txt with below content. File paths need to be **_absolute paths_** of the VCFs.
 
 c:\one.vcf c:\two.vcf
+
 c:\a.vcf c:\b.vcf
+
 c:\x.vcf c:\y.vcf
