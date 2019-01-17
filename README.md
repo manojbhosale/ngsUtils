@@ -20,6 +20,9 @@ Prerequisite: **Java 1.8** or **_higher_**
 3. Click **"Compare"**
 4. Based on size of the VCF files it will take time to compare the VCF. in the mean time the UI will _freeze_ as its a single threaded application.
 5. After comparison is done the UI will update with the comparison results as displayed in below screenshot
+Inline-style: 
+![alt text](https://github.com/manojbhosale/hello-world/blob/master/MAutomatonScreen.png "MAutomaton screen")
+
 6. If you are interested to find out the actual mismatching and common variants in VCF format visit "C:\gatKAutomator\comparisonResults" directory of your computer, not to mentione you need to have read/write access to this location.The result VCF are named in following way,
 
 * Common variants in both vcf: <VCF 1>_common.vcf
