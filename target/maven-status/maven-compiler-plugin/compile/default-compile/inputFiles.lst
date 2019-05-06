@@ -1,9 +1,11 @@
 D:\CourseWork\EclipseBackup\WorkSpaces\GatkAutomation\workspace\gatkAutomation\src\com\psl\swingexample\Notepad.java
 D:\CourseWork\EclipseBackup\WorkSpaces\GatkAutomation\workspace\gatkAutomation\src\com\psl\automation\main\MainGui.java
+D:\CourseWork\EclipseBackup\WorkSpaces\GatkAutomation\workspace\gatkAutomation\src\gatkUtils\StreamGobbler.java
 D:\CourseWork\EclipseBackup\WorkSpaces\GatkAutomation\workspace\gatkAutomation\src\com\psl\automation\annotation\Driver.java
 D:\CourseWork\EclipseBackup\WorkSpaces\GatkAutomation\workspace\gatkAutomation\src\liftoverutils\IntervalTree.java
 D:\CourseWork\EclipseBackup\WorkSpaces\GatkAutomation\workspace\gatkAutomation\src\liftoverutils\BedInterval.java
 D:\CourseWork\EclipseBackup\WorkSpaces\GatkAutomation\workspace\gatkAutomation\src\vcfutils\TsTvStatistics.java
+D:\CourseWork\EclipseBackup\WorkSpaces\GatkAutomation\workspace\gatkAutomation\src\gatkUtils\GatkThread.java
 D:\CourseWork\EclipseBackup\WorkSpaces\GatkAutomation\workspace\gatkAutomation\src\vcfutils\VariantExceptions.java
 D:\CourseWork\EclipseBackup\WorkSpaces\GatkAutomation\workspace\gatkAutomation\src\com\psl\automation\main\BigTextField.java
 D:\CourseWork\EclipseBackup\WorkSpaces\GatkAutomation\workspace\gatkAutomation\src\com\psl\swingexample\OpenMenu.java
@@ -12,6 +14,7 @@ D:\CourseWork\EclipseBackup\WorkSpaces\GatkAutomation\workspace\gatkAutomation\s
 D:\CourseWork\EclipseBackup\WorkSpaces\GatkAutomation\workspace\gatkAutomation\src\hsutils\BamSorter.java
 D:\CourseWork\EclipseBackup\WorkSpaces\GatkAutomation\workspace\gatkAutomation\src\liftoverutils\LiftOverDriver.java
 D:\CourseWork\EclipseBackup\WorkSpaces\GatkAutomation\workspace\gatkAutomation\src\com\psl\swingexample\FirstSwingExample.java
+D:\CourseWork\EclipseBackup\WorkSpaces\GatkAutomation\workspace\gatkAutomation\src\gatkUtils\GatkUtils.java
 D:\CourseWork\EclipseBackup\WorkSpaces\GatkAutomation\workspace\gatkAutomation\src\com\psl\automation\panels\CompareVcfPanel.java
 D:\CourseWork\EclipseBackup\WorkSpaces\GatkAutomation\workspace\gatkAutomation\src\com\psl\automation\panels\TsTvMetricsPanel.java
 D:\CourseWork\EclipseBackup\WorkSpaces\GatkAutomation\workspace\gatkAutomation\src\liftoverutils\IntervalNode.java
@@ -38,3 +41,4 @@ D:\CourseWork\EclipseBackup\WorkSpaces\GatkAutomation\workspace\gatkAutomation\s
 D:\CourseWork\EclipseBackup\WorkSpaces\GatkAutomation\workspace\gatkAutomation\src\com\psl\swingexample\MainScreen.java
 D:\CourseWork\EclipseBackup\WorkSpaces\GatkAutomation\workspace\gatkAutomation\src\vcfutils\ComparisonResult.java
 D:\CourseWork\EclipseBackup\WorkSpaces\GatkAutomation\workspace\gatkAutomation\src\com\psl\automation\fileCompare\VCFrecord.java
+D:\CourseWork\EclipseBackup\WorkSpaces\GatkAutomation\workspace\gatkAutomation\src\vcfutils\VCFBedIntersect.java
