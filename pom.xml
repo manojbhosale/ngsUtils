@@ -56,6 +56,7 @@
 
 
 	<build>
+	
 		<sourceDirectory>src</sourceDirectory>
 		<resources>
 			<resource>
@@ -63,6 +64,12 @@
 				<excludes>
 					<exclude>**/*.java</exclude>
 				</excludes>
+			</resource>
+			<resource>
+				<directory>resources</directory>
+			</resource>
+			<resource>
+				<directory>src/main/config</directory>
 			</resource>
 		</resources>
 
@@ -120,7 +127,7 @@
 				<artifactId>maven-clean-plugin</artifactId>
 				<version>2.5</version>
 			</plugin>
-
+			
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>

@@ -13,6 +13,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.net.URL;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -36,6 +37,7 @@ import com.psl.automation.panels.BarcodeMetricsPanel;
 import com.psl.automation.panels.CompareVcfPanel;
 import com.psl.automation.panels.QCComparePanel;
 import com.psl.automation.panels.TsTvMetricsPanel;
+import com.psl.automation.panels.VcfBedIntersectionPanel;
 
 public class MainGui implements ActionListener{
 	//Log4j logger
@@ -56,7 +58,10 @@ public class MainGui implements ActionListener{
 	public void createUi(){
 
 		JFrame mainFrame = new JFrame("MAutomaton");
-		ImageIcon img = new ImageIcon("C:\\Users\\manojkumar_bhosale\\Desktop\\Logo\\SoftLogo.png");
+		URL file = 
+				getClass().getClassLoader().getResource("50Pix.png");
+		ImageIcon img = new ImageIcon(file);
+		System.out.println(file);
 		mainFrame.setIconImage(img.getImage());
 		mainFrame.setSize(500, 300);
 		mainFrame.setDefaultCloseOperation(mainFrame.EXIT_ON_CLOSE);
@@ -70,11 +75,12 @@ public class MainGui implements ActionListener{
 		BarcodeMetricsPanel bmp = new BarcodeMetricsPanel();
 		TsTvMetricsPanel tstvp = new TsTvMetricsPanel();
 		QCComparePanel qcp = new QCComparePanel();
-		
+		VcfBedIntersectionPanel vbedp = new VcfBedIntersectionPanel();
 		jtp.addTab("VCF comparator", cvp.createCompareVcfPanel());
 		jtp.addTab("HS Util", bmp.createFileConfigPanel());
 		jtp.addTab("VCF Util", tstvp.createVcfUtilPanel());
 		jtp.addTab("QC compare", qcp.createCompareQcPanel());
+		jtp.addTab("VCF BED intersect", vbedp.createIntersectVcfPanel());
 
 //		/createFileConfigPanel();
 		//createSortPanel();
