@@ -155,7 +155,7 @@ public class LiftOverDriver {
 				Integer remapBaseSize = 0; 
 				for(BedInterval inter : nearestResult){
 					if(inter.getChromosome().equals(chrStrand[0]) && inter.getStrand().equals(chrStrand[1])){	
-						remapBaseSize = remapBaseSize + inter.getStop() - inter.getStart();
+						remapBaseSize = (int)(remapBaseSize + inter.getStop() - inter.getStart());
 					}
 				}
 
@@ -223,8 +223,8 @@ public class LiftOverDriver {
 						System.out.println(filteredByChrStrand.first().getStart());
 					}
 					
-					Integer combinedStart = firstInterval.getStart();
-					Integer combinedStop = lastInterval.getStop();
+					Integer combinedStart = (int)firstInterval.getStart();
+					Integer combinedStop = (int)lastInterval.getStop();
 
 					pw.print(firstInterval.getChromosome()+"\t"+combinedStart+"\t"+combinedStop+"\t"+firstInterval.getStrand());
 					for(int i = 3; i < splited.length ; i++){
@@ -255,13 +255,13 @@ public class LiftOverDriver {
 			if(chrStrandMap.containsKey(tempStr)){
 
 				Integer size = chrStrandMap.get(tempStr);
-				Integer newIntervalSize = i.getStop() - i.getStart();
+				Integer newIntervalSize = (int) (i.getStop() - i.getStart());
 				size = size + newIntervalSize;
 
 				chrStrandMap.put(tempStr, size);
 
 			}else{
-				Integer newIntervalSize = i.getStop() - i.getStart();
+				Integer newIntervalSize = (int) (i.getStop() - i.getStart());
 				chrStrandMap.put(tempStr,newIntervalSize);
 			}
 

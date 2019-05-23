@@ -1,5 +1,7 @@
 package liftoverutils;
 
+import java.util.List;
+
 public class Interval<Type> implements Comparable<Interval<Type>>
 {
 
@@ -67,5 +69,22 @@ public class Interval<Type> implements Comparable<Interval<Type>>
       else
           return 0;
   }
+  
+  @Override
+	public boolean equals(Object arg0) {
+		if(arg0 instanceof Interval<?>) {
+			Interval<?> inter = (Interval<?>) arg0;
+			return this.start == inter.start && this.end == inter.end;
+		}
+		return false ;
+	}
+
+@Override
+public String toString() {
+	return "Interval [start=" + start + ", end=" + end + ", data=" + data + "]";
+}
+  
+
+  
 
 }

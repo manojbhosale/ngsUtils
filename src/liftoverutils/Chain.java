@@ -216,8 +216,8 @@ public class Chain {
 		targetEnd = (int)result.getData().get(1);
 		targetStrand =  (int)result.getData().get(3) == 1?"+":"-";
 		BedInterval bi = intersectBed(qbedInterval, new BedInterval(qbedInterval.getChromosome(), (int)sourceStart, (int)sourceEnd));
-		int lOffset = Math.abs(bi.getStart()-(int)sourceStart);
-		int size = Math.abs(bi.getStop()-bi.getStart());
+		int lOffset = (int)Math.abs(bi.getStart()-(int)sourceStart);
+		int size = (int)Math.abs(bi.getStop()-bi.getStart());
 		int resStart = 0;
 		if(targetStrand.equals("+")){
 			resStart = targetStart + lOffset;
@@ -255,7 +255,7 @@ public class Chain {
 			return new BedInterval();
 		}
 
-		return new BedInterval(one.getChromosome(),max(one.getStart(),two.getStart()),min(one.getStop(),two.getStop()));
+		return new BedInterval(one.getChromosome(),max((int)one.getStart(),(int)two.getStart()),min((int)one.getStop(),(int)two.getStop()));
 
 	}
 

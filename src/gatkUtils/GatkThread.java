@@ -67,14 +67,14 @@ public class GatkThread implements Runnable {
 				runAndGobbleCommand(mdupCommand, r);
 
 				stepFileName = newStepFileName;
-			} else if (obj1.keySet().contains("BuildBamIndex")) {
+			} else if (obj1.keySet().contains("BuildBamIndex") && ((JSONObject)obj1.get("BuildBamIndex")).values().contains("true")) {
 				String bamIndexCommand = "C:\\Program Files\\Java\\jdk1.8.0_192\\bin\\java.exe "
 						+ GatkUtils.maxHeapSpace + " -jar " + GatkUtils.picardPath + " BuildBamIndex " + " I="
 						+ inputFileLocation.resolve(stepFileName);
 				System.out.println(bamIndexCommand);
 
 				runAndGobbleCommand(bamIndexCommand, r);
-			} else if (obj1.keySet().contains("RealignerTargetCreator")) {
+			} else if (obj1.keySet().contains("RealignerTargetCreator") && ((JSONObject)obj1.get("RealignerTargetCreator")).values().contains("true")) {
 				listFileName = inputFileLocation.resolve(FilenameUtils.getBaseName(stepFileName)).toString() + ".list";
 				String realignerCommand = "C:\\Program Files\\Java\\jdk1.8.0_192\\bin\\java.exe "
 						+ GatkUtils.maxHeapSpace + " -jar " + GatkUtils.gatkPath + " -T RealignerTargetCreator "
@@ -83,7 +83,7 @@ public class GatkThread implements Runnable {
 				System.out.println(realignerCommand);
 				runAndGobbleCommand(realignerCommand, r);
 
-			} else if (obj1.keySet().contains("IndelRealigner")) {
+			} else if (obj1.keySet().contains("IndelRealigner") && ((JSONObject)obj1.get("IndelRealigner")).values().contains("true")) {
 				String newStepFileName = inputFileLocation.resolve(FilenameUtils.getBaseName(stepFileName)).toString()
 						+ ".realigned.bam";
 				String indelRealignerCommand = "C:\\Program Files\\Java\\jdk1.8.0_192\\bin\\java.exe "
@@ -96,7 +96,7 @@ public class GatkThread implements Runnable {
 				stepFileName = newStepFileName;
 			}
 
-			else if (obj1.keySet().contains("FixMateInformation")) {
+			else if (obj1.keySet().contains("FixMateInformation") && ((JSONObject)obj1.get("FixMateInformation")).values().contains("true")) {
 				// java -Xmx1g -jar
 				// tools\picard-tools-1.82\picard-tools-1.82\FixMateInformation.jar
 				// INPUT=%sampleName%.sorted.realigned.bam
@@ -112,8 +112,15 @@ public class GatkThread implements Runnable {
 				runAndGobbleCommand(mateFixCommand, r);
 
 				stepFileName = newStepFileName;
+				
+				String bamIndexCommand = "C:\\Program Files\\Java\\jdk1.8.0_192\\bin\\java.exe "
+						+ GatkUtils.maxHeapSpace + " -jar " + GatkUtils.picardPath + " BuildBamIndex " + " I="
+						+ inputFileLocation.resolve(stepFileName);
+				System.out.println(bamIndexCommand);
+				runAndGobbleCommand(bamIndexCommand, r);
 
-			} else if (obj1.keySet().contains("BaseRecalibrator")) {
+
+			} else if (obj1.keySet().contains("BaseRecalibrator") && ((JSONObject)obj1.get("BaseRecalibrator")).values().contains("true")) {
 				recalGrpFile = inputFileLocation.resolve(FilenameUtils.getBaseName(stepFileName)).toString()
 						+ ".recal.grp";
 				String baseRecalCommand = "C:\\Program Files\\Java\\jdk1.8.0_192\\bin\\java.exe "
@@ -122,7 +129,7 @@ public class GatkThread implements Runnable {
 						+ inputFileLocation.resolve(recalGrpFile) + " -bqsrBAQGOP 40  ";
 				runAndGobbleCommand(baseRecalCommand, r);
 
-			} else if (obj1.keySet().contains("PrintReads")) {
+			} else if (obj1.keySet().contains("PrintReads") && ((JSONObject)obj1.get("PrintReads")).values().contains("true")) {
 				// java -Xmx1g -jar tools\GenomeAnalysisTK.jar -T PrintReads -R %genomeRef% -I
 				// %sampleName%.sorted.realigned.fixed.bam -BQSR %sampleName%.recal.grp -o
 				// %sampleName%.sorted.realigned.fixed.bqsr.bam
@@ -136,7 +143,7 @@ public class GatkThread implements Runnable {
 				runAndGobbleCommand(printReadCommand, r);
 
 				stepFileName = newStepFile;
-			} else if (obj1.keySet().contains("UnifiedGenotyper")) {
+			} else if (obj1.keySet().contains("UnifiedGenotyper") && ((JSONObject)obj1.get("UnifiedGenotyper")).values().contains("true")) {
 				// java -Xmx1g -jar tools\GenomeAnalysisTK.jar -R %genomeRef% -T
 				// UnifiedGenotyper -I %sampleName%.sorted.realigned.fixed.bqsr.bam -mbq 13 -glm
 				// BOTH -indelGCP 20 -indelGOP 40 -o %sampleName%_snps.raw.vcf -L %targetBed%
@@ -144,8 +151,12 @@ public class GatkThread implements Runnable {
 				String UnifiedGenotyperCommand = "C:\\Program Files\\Java\\jdk1.8.0_192\\bin\\java.exe "
 						+ GatkUtils.maxHeapSpace + " -jar " + GatkUtils.gatkPath + " -T UnifiedGenotyper  " + " -R "
 						+ GatkUtils.referencePath + " -I " + inputFileLocation.resolve(stepFileName) + " -o "
-						+ inputFileLocation.resolve(resultVcf) + " -BQSR " + inputFileLocation.resolve(recalGrpFile)
+						+ inputFileLocation.resolve(resultVcf) 
 						+ "  -mbq 13 -glm BOTH -indelGCP 20 -indelGOP 40 " + " -L " + GatkUtils.targetBedFile;
+				if(obj1.keySet().contains("BaseRecalibrator") && ((JSONObject)obj1.get("BaseRecalibrator")).values().contains("true")) {
+					UnifiedGenotyperCommand = UnifiedGenotyperCommand+" -BQSR " + inputFileLocation.resolve(recalGrpFile);
+				}
+				
 				runAndGobbleCommand(UnifiedGenotyperCommand, r);
 
 			}

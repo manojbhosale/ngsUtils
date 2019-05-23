@@ -4,7 +4,7 @@ package liftoverutils;
 import java.util.ArrayList;
 import java.util.List;
 
-class IntervalTree<Type> {
+public class IntervalTree<Type> {
 
 	private IntervalNode<Type> head;
 	private List<Interval<Type>> intervalList;
