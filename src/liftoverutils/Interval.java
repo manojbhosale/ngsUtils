@@ -53,7 +53,7 @@ public class Interval<Type> implements Comparable<Interval<Type>>
 
   public boolean intersects(Interval<?> other)
   {
-      return other.getEnd() > start && other.getStart() < end;
+      return other.getEnd() >= start && other.getStart() < end;
   }
 
   public int compareTo(Interval<Type> other)

@@ -13,6 +13,12 @@
           <exclude>**/*.java</exclude>
         </excludes>
       </resource>
+      <resource>
+        <directory>resources</directory>
+      </resource>
+      <resource>
+        <directory>src/main/config</directory>
+      </resource>
     </resources>
     <plugins>
       <plugin>

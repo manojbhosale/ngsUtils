@@ -5,6 +5,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,14 +20,42 @@ public class BedUtils {
 
 	public static void main(String[] args) {
 
-		File f = new File("C:\\Users\\manojkumar_bhosale\\Desktop\\ForIntervalMerging\\DEF_662-1322126769L_AllTracks_amplicons.bed");
-		File f1 = new File("C:\\Users\\manojkumar_bhosale\\Desktop\\d\\CancerAll-In-OneLung_hg38Mut.bed");
+		File f = new File("C:\\Users\\manojkumar_bhosale\\Desktop\\ForIntervalMerging\\Intersect\\CFTR_SS\\S07084713_covered.bed");
+		File f1 = new File("C:\\Users\\manojkumar_bhosale\\Desktop\\ForIntervalMerging\\Intersect\\CFTR_SS\\S07084713_target.bed");
 		//mergeBedFiles(f,null);
-		Set<BedInterval> intersectBedFiles = mergeBedFiles(f);
+		//Set<BedInterval> intersectBedFiles = mergeBedFiles(f);
+		Set<BedInterval> intersectBedFiles = intersectBedFiles(f,f1);
+		PrintWriter pw = null;
+		try {
+			pw = new PrintWriter(new File("C:\\Users\\manojkumar_bhosale\\Desktop\\ForIntervalMerging\\Intersect\\CFTR_SS\\interSectedResult.bed"));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		intersectBedFiles.forEach(pw::println);
 
-		intersectBedFiles.forEach(System.out::println);
-
+		pw.close();
 	}
+	
+	
+	public static void intersectBedFilesToFolder(File one, File two, File folder){
+		Set<BedInterval> intersectBedFiles = intersectBedFiles(one,two);
+		String outputName = one.getName().replace(".", "_")+"_"+two.getName().replace(".", "_")+".bed";
+		Path outputFile = folder.toPath().resolve(outputName);
+		try(PrintWriter pw = new PrintWriter(new File(outputFile.toString()))){
+			
+			intersectBedFiles.forEach(pw::println);
+
+			
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	
 
 	public static Set<BedInterval> intersectBedFiles(File one, File two){
 

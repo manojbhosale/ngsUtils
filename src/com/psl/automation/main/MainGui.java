@@ -5,6 +5,7 @@ import hsutils.BamSorter;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
@@ -29,17 +30,21 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.plaf.basic.BasicTabbedPaneUI;
 
 import org.apache.log4j.Logger;
 
 import com.psl.automation.panels.BarcodeMetricsPanel;
+import com.psl.automation.panels.BedUtilitiesPanel;
 import com.psl.automation.panels.CompareVcfPanel;
 import com.psl.automation.panels.QCComparePanel;
 import com.psl.automation.panels.TsTvMetricsPanel;
 import com.psl.automation.panels.VcfBedIntersectionPanel;
 
-public class MainGui implements ActionListener{
+public class MainGui implements ActionListener,Runnable{
 	//Log4j logger
 	private static Logger log4jLog = Logger.getLogger(MainGui.class.getName());
 
@@ -52,10 +57,10 @@ public class MainGui implements ActionListener{
 	
 	JTextArea log;
 	File file = null;
-	
+	JTabbedPane jtp = new JTabbedPane();
 	
 
-	public void createUi(){
+	public void run(){
 
 		JFrame mainFrame = new JFrame("MAutomaton");
 		URL file = 
@@ -67,7 +72,6 @@ public class MainGui implements ActionListener{
 		mainFrame.setDefaultCloseOperation(mainFrame.EXIT_ON_CLOSE);
 		//JPanel gatkPanel = new JPanel();
 
-		JTabbedPane jtp = new JTabbedPane();
 		
 		//path.setMargin(new Insets(2, 2, 2, 2));
 		//jtp.addTab("GATK", gatkPanel);
@@ -76,11 +80,35 @@ public class MainGui implements ActionListener{
 		TsTvMetricsPanel tstvp = new TsTvMetricsPanel();
 		QCComparePanel qcp = new QCComparePanel();
 		VcfBedIntersectionPanel vbedp = new VcfBedIntersectionPanel();
+		BedUtilitiesPanel bup = new BedUtilitiesPanel();
 		jtp.addTab("VCF comparator", cvp.createCompareVcfPanel());
 		jtp.addTab("HS Util", bmp.createFileConfigPanel());
 		jtp.addTab("VCF Util", tstvp.createVcfUtilPanel());
 		jtp.addTab("QC compare", qcp.createCompareQcPanel());
 		jtp.addTab("VCF BED intersect", vbedp.createIntersectVcfPanel());
+		jtp.addTab("BED intersect", bup.createIntersectBedPanel());
+		
+		jtp.addChangeListener(new TabSelected());
+		
+		//jtp.setBackgroundAt(jtp.getSelectedIndex(), Color.CYAN);
+		//set tab name font
+	      Font boldFont = new Font("Courier new", Font.BOLD, 18);        
+
+		jtp.setForeground(Color.DARK_GRAY);
+		jtp.setFont(boldFont);
+		//jtp.setForeground(Color.RED);
+		jtp.setUI(new BasicTabbedPaneUI() {
+			   @Override
+			   protected void installDefaults() {
+			       super.installDefaults();
+			       highlight = Color.pink;
+			       lightHighlight = Color.green;
+			       shadow = Color.red;
+			       darkShadow = Color.cyan;
+			       focus = Color.red;
+			       
+			   }
+			});
 
 //		/createFileConfigPanel();
 		//createSortPanel();
@@ -90,6 +118,27 @@ public class MainGui implements ActionListener{
 		
 
 	}
+	
+	 private class TabSelected implements ChangeListener {
+
+	        @Override
+	        public void stateChanged(ChangeEvent e) {
+	            int index = jtp.getSelectedIndex();
+	            for(int i = 0; i < 6;i++) {
+	            	if(i==index) {
+	            		jtp.setBackgroundAt(index, Color.getHSBColor(34, 0.24f, 0.97f));
+	            		//Color.ge
+	            	}else {
+	            		jtp.setBackgroundAt(i,Color.getHSBColor(336, 0.3f, 0.75f));
+	            	}
+	            }
+	            
+	            
+
+	        }
+
+	    }
+
 
 	public void createSortPanel(){
 		path = new JTextField();
@@ -111,7 +160,7 @@ public class MainGui implements ActionListener{
 
 			public void itemStateChanged(ItemEvent e) {
 				// TODO Auto-generated method stub
-				System.out.println("Design is of "+designtype.getSelectedItem()+"type !!");
+				//System.out.println("Design is of "+designtype.getSelectedItem()+"type !!");
 				if(designtype.getSelectedItem().equals("HaloPlex")){
 					sort.setEnabled(false);
 				}else{
@@ -169,7 +218,8 @@ public class MainGui implements ActionListener{
 		}
 
 		MainGui mg = new MainGui();
-		mg.createUi();
+		Thread t = new Thread(mg);
+		t.start();
 
 	}
 

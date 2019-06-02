@@ -194,14 +194,15 @@ public class CompareUtils {
 	}
 
 */
-	public ComparisonResult compareVcfs(File vcfOne, File vcfTwo) throws IOException{
-	
-			File f = new File("C:\\gatKAutomator\\comparisonResults");
-			if(!f.exists()){
-				f.mkdir();
+	public ComparisonResult compareVcfs(File vcfOne, File vcfTwo, File outputFolder) throws IOException{
+		
+			
+			//File f = new File("C:\\gatKAutomator\\comparisonResults");
+			if(!outputFolder.exists()){
+				outputFolder.mkdir();
 			}
-			String destinationFolder = f.getAbsolutePath();
-			System.out.println(destinationFolder);
+			String destinationFolder = outputFolder.getAbsolutePath();
+			//System.out.println(destinationFolder);
 		
 			VCFFileReader vcr1 = new VCFFileReader(vcfOne,false);
 			VCFFileReader vcr2 = new VCFFileReader(vcfTwo,false);
@@ -268,8 +269,8 @@ public class CompareUtils {
 					int temp = hmvc.indexOf(vcr);
 					VCFrecord vcrc = hmvc.get(temp);
 					vcrc.setValidationType("TP");
-					System.out.println(vcrc.equals(vcr));
-					System.out.println("HashCodes: "+vcrc.hashCode()+" "+vcr.hashCode());
+					//System.out.println(vcrc.equals(vcr));
+					//System.out.println("HashCodes: "+vcrc.hashCode()+" "+vcr.hashCode());
 					hmvc.set(temp, vcrc);
 				}else{			
 					hmvc.add(vcr);

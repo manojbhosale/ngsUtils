@@ -41,10 +41,14 @@ public class CompareVcfPanel {
 	JButton file2;
 	JButton file3;
 	JButton compare;
+	JButton folder;
+
 
 	JTextField vcfOneField;
 	JTextField vcfTwoField;
 	JTextField mapFileField;
+	JTextField folderField;
+
 
 	File vcfOnePath;
 	File vcfTwoPath;
@@ -53,6 +57,8 @@ public class CompareVcfPanel {
 	JPanel fileSelection = new JPanel();
 	JPanel oneComparison = new JPanel();
 	JPanel twoComparison = new JPanel();
+	JPanel outputFolder = new JPanel();
+
 	JPanel textPanel = new JPanel();
 	JPanel buttonPanel = new JPanel();
 	JPanel pathPanel = new JPanel();
@@ -62,6 +68,7 @@ public class CompareVcfPanel {
 	ComparisonResult result;
 
 	File lastPath;
+	File folderPath;
 	
 	JTable jt = new JTable() {
 
@@ -121,6 +128,13 @@ public class CompareVcfPanel {
 				.createTitledBorder("Multiple files"));
 		twoComparison.setLayout(new BoxLayout(twoComparison,
 				BoxLayout.LINE_AXIS));
+		
+		outputFolder.setBorder(BorderFactory
+				.createTitledBorder("Output Location"));
+		outputFolder.setLayout(new BoxLayout(outputFolder,
+				BoxLayout.LINE_AXIS));
+
+		
 		// fileSelection.setLayout(new GridLayout());
 
 		textPanel.setLayout(new BoxLayout(textPanel, BoxLayout.PAGE_AXIS));
@@ -152,6 +166,10 @@ public class CompareVcfPanel {
 		JLabel mapping = new JLabel();
 		mapping.setText("Select Mapping file:");
 		mapping.add(Box.createVerticalGlue());
+		
+		JLabel folderlocation = new JLabel();
+		folderlocation.setText("Select output folder :");
+		folderlocation.add(Box.createVerticalGlue());
 
 		// textPanel.add(modeLabel);
 		textPanel.add(Box.createVerticalStrut(15));
@@ -179,6 +197,10 @@ public class CompareVcfPanel {
 		mapFileField = new JTextField();
 		mapFileField.setSize(100, 10);
 		mapFileField.setEditable(false);
+		
+		folderField = new JTextField();
+		folderField.setPreferredSize(new Dimension(450,30));
+		folderField.setEditable(false);
 
 		pathPanel.add(Box.createVerticalStrut(15));
 		pathPanel.add(vcfOneField);
@@ -201,9 +223,15 @@ public class CompareVcfPanel {
 		twoComparison.add(mapping);
 		FileMapButton();
 		twoComparison.add(mapFileField);
+		
+		outputFolder.add(folderlocation);
+		OutputFolderButton();
+		outputFolder.add(folderField);
+		
 
 		fileSelection.add(oneComparison);
 		fileSelection.add(twoComparison);
+		fileSelection.add(outputFolder);
 		fileSelection.add(comparePanel);
 
 		vcfComparePanel.add(fileSelection);
@@ -307,6 +335,37 @@ public class CompareVcfPanel {
 		twoComparison.add(file3);
 
 	}
+	
+	
+	public void OutputFolderButton() {
+		folder = new JButton("Browse");
+		// file2.setAlignmentY(Component.LEFT_ALIGNMENT);
+		folder.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				JFileChooser jfile = new JFileChooser();
+				jfile.setCurrentDirectory(lastPath);
+				jfile.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+				int returnValue = jfile.showOpenDialog(vcfComparePanel);
+
+				if (returnValue == JFileChooser.APPROVE_OPTION) {
+					folderPath = jfile.getSelectedFile();
+					folderField.setText(folderPath.getAbsolutePath());
+					lastPath = new File(folderPath.getAbsolutePath());
+
+					// This is where a real application would open the file.
+					// log.append("Opening: " + file.getName() + "." + newline);
+				} else {
+					// log.append("Open command cancelled by user." + newline);
+				}
+
+			}
+		});
+
+		outputFolder.add(folder);
+
+	}
+
 
 	public void Compare() {
 		compare = new JButton("Compare");
@@ -315,9 +374,12 @@ public class CompareVcfPanel {
 
 			public void actionPerformed(ActionEvent e) {
 				try {
+					if(folderPath == null) {
+						folderPath = new File(System.getProperty("user.dir"));
+					}
 					if (vcfOnePath != null && vcfTwoPath != null) {
 						result = vcfCompareUtil.compareVcfs(vcfOnePath,
-								vcfTwoPath);
+								vcfTwoPath, folderPath);
 						/*
 						 * if(dtm.getRowCount() != 0){ dtm.removeRow(0); }
 						 */
@@ -338,8 +400,8 @@ public class CompareVcfPanel {
 							line.trim();
 							String[] paths = line.split("\t");
 							result = vcfCompareUtil.compareVcfs(new File(
-									paths[0]), new File(paths[1]));
-							System.out.println(result);
+									paths[0]), new File(paths[1]),folderPath);
+							//System.out.println(result);
 							/*
 							 * if(dtm.getRowCount() != 0){ dtm.removeRow(0); }
 							 */
