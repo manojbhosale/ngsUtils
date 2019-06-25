@@ -6,7 +6,8 @@ This is an attempt to tackle the daily tasks in NGS data analysis. This tool is 
 2. Duplicate metrics utility: To calculate %duplicates from a BAM file.
 3. VCF Ts/Tv util: To calculate transition and transversion ratio from given VCF file
 4. Comparison of QC metrics in the form of .properties file.
-
+5. Intersect a VCF file(Indexed) with a BED file.
+6. Interset 2 BED files to get intersecting intervals.
 
 ## How to use
 
@@ -22,7 +23,7 @@ Prerequisite: **Java 1.8** or **_higher_**
 5. After comparison is done the UI will update with the comparison results as displayed in below screenshot. The red colored cells indicate non-zero mismatches
 
 
-![alt text](https://github.com/manojbhosale/hello-world/blob/master/MAutomatonScreen.png "MAutomaton screen")
+![alt text](https://github.com/manojbhosale/hello-world/blob/master/demo.png "MAutomaton screen")
 
 6. If you are interested to find out the actual mismatching and common variants in VCF format visit "C:\gatKAutomator\comparisonResults" directory of your computer, not to mentione you need to have read/write access to this location.The result VCF are named in following way,
 
