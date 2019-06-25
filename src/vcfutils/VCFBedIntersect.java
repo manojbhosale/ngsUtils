@@ -24,9 +24,9 @@ public class VCFBedIntersect {
 
 
 	public static void main(String[] args) {
-		Path inputVcfFile = Paths.get("D:\\ToDelete\\VCF_test\\input1.vcf");
+		Path inputVcfFile = Paths.get("C:\\Users\\manojkumar_bhosale\\Desktop\\ToDelete_1\\EL_SCS_v6s_XT_Ver_121817_11_S11_R1.fastq_183_VCF_4_2.vcf");
 		Path inputBedFile = Paths.get("D:\\ToDelete\\VCF_test\\SureSelect_Trio_TestDesign_1_AllTracks_covered.bed");
-		Path outputVcfFile = Paths.get("D:\\ToDelete\\VCF_test\\");
+		Path outputVcfFile = Paths.get("C:\\Users\\manojkumar_bhosale\\Desktop\\ToDelete_1\\");
 
 		try {
 			intersectBedAndVCF(inputVcfFile, inputBedFile, outputVcfFile);

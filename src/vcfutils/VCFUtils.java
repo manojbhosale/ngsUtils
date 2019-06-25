@@ -2,14 +2,21 @@ package vcfutils;
 
 import htsjdk.samtools.util.CloseableIterator;
 import htsjdk.variant.variantcontext.VariantContext;
+import htsjdk.variant.variantcontext.writer.Options;
+import htsjdk.variant.variantcontext.writer.VariantContextWriter;
+import htsjdk.variant.variantcontext.writer.VariantContextWriterBuilder;
+import htsjdk.variant.variantcontext.writer.VariantContextWriterBuilder.OutputType;
 import htsjdk.variant.vcf.VCFFileReader;
+import htsjdk.variant.vcf.VCFHeader;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Path;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -102,9 +109,11 @@ public class VCFUtils{
 
 
 	public static void main(String args[]) throws IOException{
-		File f1 = new File("C:\\Users\\manojkumar_bhosale\\Desktop\\TestVCFs\\1LacVariants\\NA12878_71fbcc40-fccd-4d00-804e-a7b872b22211_1554800930433_VCF_4_2.vcf");
-		File f2 = new File("C:\\Users\\manojkumar_bhosale\\Desktop\\TestVCFs\\1LacVariants\\NA12878_7923ea1d-481c-40b7-89b7-21990b8a7df8_1554800038678_VCF_4_2.vcf");
-		List<VariantContext> compareVcfAnnotations = compareVcfAnnotations(f1, f2);
+		File f1 = new File("C:\\Users\\manojkumar_bhosale\\Desktop\\ToDelete_1\\NA16455_Job_611_VCF_4_2.vcf");
+		File f2 = new File("C:\\Users\\manojkumar_bhosale\\Desktop\\ToDelete_1\\NA16455_24Jun2019_17_50_38_382_1561390769770_VCF_4_2.vcf");
+		File file1 = createTemporaryIndexedVcfFromInput(f1, "A_1");
+		File file2 = createTemporaryIndexedVcfFromInput(f2, "B_2");
+		List<VariantContext> compareVcfAnnotations = compareVcfAnnotations(file1, file2);
 		System.out.println("Manojkuamr !!");
 		if(compareVcfAnnotations.size() == 0) {
 			System.out.println("Same !!!");
@@ -113,7 +122,12 @@ public class VCFUtils{
 				System.out.println(vc);
 			}
 		}
-		
+		file1.delete();
+		File file3 = new File(file1.toString()+".idx");
+		file2.delete();
+		File file4 = new File(file2.toString()+".idx");
+		file3.delete();
+		file4.delete();
 		
 	}
 
@@ -122,14 +136,14 @@ public class VCFUtils{
 
 		VCFFileReader vcr1 = new VCFFileReader(vcf1, true);
 		VCFFileReader vcr2 = new VCFFileReader(vcf2, true);
-		List<VariantContext> diffVars = new ArrayList<>();
+		List<VariantContext> diffVars = new ArrayList<>();	
 
 		for(VariantContext vc : vcr1) {
 
 			CloseableIterator<VariantContext> query = vcr2.query(vc);
 			List<VariantContext> list = query.toList();
 			
-			if(list.size() > 1) {
+			if(list.size() > 1 || list.size() == 0) {
 				continue;
 			}
 			
@@ -185,4 +199,50 @@ public class VCFUtils{
 		return true;
 	}
 
+	public static File createTemporaryIndexedVcfFromInput(final File vcfFile, final String tempFilePrefix) throws IOException {
+	    final String extension;
+
+	    if (vcfFile.getAbsolutePath().endsWith(".vcf")) extension = ".vcf";
+	    else if (vcfFile.getAbsolutePath().endsWith(".vcf.gz")) extension = ".vcf.gz";
+	    else
+	        throw new IllegalArgumentException("couldn't find a .vcf or .vcf.gz ending for input file " + vcfFile.getAbsolutePath());
+	    File directory = vcfFile.getParentFile();
+	    File output = createTemporaryIndexedVcfFile(tempFilePrefix, extension,directory);
+	    final VCFFileReader reader = new VCFFileReader(vcfFile, false);
+		VCFHeader outputHeader = reader.getFileHeader();
+		boolean CREATE_INDEX = true;
+		final EnumSet<Options> options = CREATE_INDEX ? EnumSet.of(Options.INDEX_ON_THE_FLY) : EnumSet.noneOf(Options.class);
+		options.add(Options.ALLOW_MISSING_FIELDS_IN_HEADER);
+		final VariantContextWriter vcfWriter = new VariantContextWriterBuilder().setReferenceDictionary(outputHeader.getSequenceDictionary()).setOutputFile(output).setOptions(options).setOutputFileType(OutputType.VCF).build();
+		vcfWriter.writeHeader(outputHeader);
+	    
+	   /* final VCFFileReader in = new VCFFileReader(vcfFile, false);
+	    final VCFHeader header = in.getFileHeader();
+
+	    final VariantContextWriter out = new VariantContextWriterBuilder().
+	            setReferenceDictionary(header.getSequenceDictionary()).
+	            setOptions(EnumSet.of(Options.INDEX_ON_THE_FLY)).
+	            setOutputFile(output).setOptions(EnumSet.of(Options.ALLOW_MISSING_FIELDS_IN_HEADER)).build();
+	    out.writeHeader(header);*/
+	    for (final VariantContext ctx : reader) {
+	    	vcfWriter.add(ctx);
+	    }
+	    vcfWriter.close();
+	    reader.close();
+	    return output;
+	}
+	
+	public static File createTemporaryIndexedVcfFile(String prefix, String extension, File directory) {
+		File tempFile = null;
+		
+		try {
+			tempFile = File.createTempFile(prefix, extension, directory);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return tempFile;
+	}
+	
 }
