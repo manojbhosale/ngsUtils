@@ -229,14 +229,24 @@ public class BAMParser implements Callable{
 
 		Integer freqSum = inList.stream().mapToInt(e -> e).sum();
 
-		Integer middleVal = freqSum / 2;
+		Integer freqByLevel[] = new Integer[inArr.length];
+		int count = 1;
+		for (int i = 0; i < inList.size(); i++) {
+			freqByLevel[i] = count * inList.get(i);
+			count++;
+		}
+		Integer freqByLevelSum = sum(freqByLevel);
+		
+		Integer middleVal = freqByLevelSum / 2;
 		Integer cumSum = 0, median = 0;
-
-		for (int i = 0; i < inArr.length; i++) {
+		System.out.println(freqByLevelSum+" "+middleVal);
+		for (int i = 0; i < freqByLevel.length; i++) {
 			if (cumSum > middleVal) {
+				System.out.println(cumSum);
 				break;
 			}
-			cumSum += inArr[i];
+			System.out.println(cumSum);
+			cumSum += freqByLevel[i];
 			median++;
 		}
 
