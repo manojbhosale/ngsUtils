@@ -42,12 +42,13 @@ public class VCFBedIntersect {
 		VCFFileReader reader = null;
 		//VCFUtils.createTemporaryIndexedVcfFromInput(vcfPath.toFile(), "temp");
 		File tempFile = vcfPath.toFile();
+		File file2 = VCFUtils.createTemporaryIndexedVcfFromInput(tempFile, "temp_");
 
 		Path outputVcf = outputFolder.resolve("intersected.vcf");
 
 
 		//tempFile = VCFUtils.createTemporaryIndexedVcfFromInput(vcfPath.toFile(), "temp");
-		reader = new VCFFileReader(tempFile); 
+		reader = new VCFFileReader(file2); 
 		
 
 
@@ -87,8 +88,9 @@ public class VCFBedIntersect {
 			vcfWriter.close();
 		}
 
-
-
+		file2.delete();
+		File file4 = new File(file2.toString()+".idx");
+		file4.delete();
 
 
 
