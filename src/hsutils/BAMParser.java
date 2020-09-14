@@ -117,7 +117,7 @@ public class BAMParser implements Callable{
 			
 			if (valErrs != null) {
 				boolean okErr = true;
-				for (Iterator iter=valErrs.iterator(); iter.hasNext(); ) {
+				for (Iterator<SAMValidationError> iter=valErrs.iterator(); iter.hasNext(); ) {
 					SAMValidationError err = (SAMValidationError) iter.next();
 					if (err.getMessage().indexOf("SAMRecord not found in header") > 0) {
 						okErr = okErr & true;
@@ -197,6 +197,10 @@ public class BAMParser implements Callable{
 
 		Integer[] freInt = new Integer[freqStr.size()];
 
+		if(freqStr.size() == 1) {
+			return freInt;
+		}
+		
 		for (int i = 0; i < freqStr.size(); i++) {
 			freInt[i] = Integer.parseInt(freqStr.get(i));
 		}
@@ -208,6 +212,10 @@ public class BAMParser implements Callable{
 
 		List<Integer> inList = Arrays.asList(inArr);
 
+		if(inArr.length == 1) {
+			return 0.0;
+		}
+		
 		Integer freqSum = inList.stream().mapToInt(e -> e).sum();
 		Integer freqByLevel[] = new Integer[inArr.length];
 		int count = 1;
@@ -223,8 +231,10 @@ public class BAMParser implements Callable{
 		return meanLevel;
 	}
 
-	public Integer getMedianAmplificationLevel(Integer[] inArr) {
-
+	public Integer getMedianAmplificationLevel(Integer[] inArr) {	
+		if(inArr.length == 1) {
+			return 0;
+		}
 		List<Integer> inList = Arrays.asList(inArr);
 
 		Integer freqSum = inList.stream().mapToInt(e -> e).sum();
@@ -235,6 +245,7 @@ public class BAMParser implements Callable{
 			freqByLevel[i] = count * inList.get(i);
 			count++;
 		}
+		
 		Integer freqByLevelSum = sum(freqByLevel);
 		
 		Integer middleVal = freqByLevelSum / 2;
@@ -249,7 +260,6 @@ public class BAMParser implements Callable{
 			cumSum += freqByLevel[i];
 			median++;
 		}
-
 		return median;
 	}
 

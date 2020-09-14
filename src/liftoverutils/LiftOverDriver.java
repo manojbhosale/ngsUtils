@@ -21,11 +21,12 @@ public class LiftOverDriver {
 	public static void main(String args[]) throws Exception{
 		Chain chn = new Chain();
 		//LiftChain lc = new LiftChain();
-
-		List<Chain> chains = chn.liftOverChain(new File("E:\\SureCall4.0\\SureCall_401\\LiftOver\\testData\\DesignsComparison\\ChainFile\\hg19ToHg38.over.chain")); 
-
+		System.out.println("Manoj");
+		List<Chain> chains = chn.liftOverChain(new File("D:\\SureCall\\SureCall42\\XTHS2_Verificaitions\\SC_4028\\CCP\\crossMap_comparison\\hg19ToHg18.over.chain")); 
+		//System.out.println(chains);
 		HashMap<String,IntervalTree<List<Object>>> chainIndex = chn.indexChains(chains);
-		BufferedReader br = new BufferedReader(new FileReader("\\\\agtdna02\\NGS_Data_From_Cloud\\neeli\\041503_1395942071620\\Covered.bed"));
+		//System.out.println(chainIndex.keySet());
+		BufferedReader br = new BufferedReader(new FileReader("D:\\SureCall\\SureCall42\\XTHS2_Verificaitions\\SC_4028\\CCP\\crossMap_comparison\\hg19.rand.bed"));
 
 		SortedSet<BedInterval> res = new TreeSet<>();
 		//PrintWriter pw=  new PrintWriter("D:\\SureCall4.0\\SureCall_401\\LiftOver\\testData\\hg19.19to18.rand.bed");
@@ -74,7 +75,7 @@ public class LiftOverDriver {
 		//pw.close();
 		
 		LiftOverDriver lod = new LiftOverDriver();
-		lod.liftBed(chainIndex, new File("\\\\agtdna02\\NGS_Data_From_Cloud\\neeli\\041503_1395942071620\\Covered.bed"),new File("\\\\agtdna02\\NGS_Data_From_Cloud\\neeli\\041503_1395942071620\\CoveredManoj.bed"));
+		lod.liftBed(chainIndex, new File("D:\\SureCall\\SureCall42\\XTHS2_Verificaitions\\SC_4028\\CCP\\crossMap_comparison\\hg19.rand.bed"),new File("D:\\SureCall\\SureCall42\\XTHS2_Verificaitions\\SC_4028\\CCP\\crossMap_comparison\\hg19.rand.lifted.ensemblChain.bed"));
 	
 		
 	}
@@ -169,7 +170,7 @@ public class LiftOverDriver {
 					continue;
 
 				}
-				pw.println(line);
+				//pw.println(line);
 				//System.out.println(line+"\t"+remapRatio+"\t"+remapBaseSize+"\t"+queryBaseSize);
 				if(reportMultiple){
 

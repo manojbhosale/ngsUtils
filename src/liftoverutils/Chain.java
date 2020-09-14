@@ -136,7 +136,7 @@ public class Chain {
 			}
 			sfrom += size + sgap;
 			tfrom += size + tgap;
-			fields = br.readLine().split("\t");
+			fields = br.readLine().split("\\s+");
 		}
 
 		//Check the invalid lines and throw an exception
@@ -340,7 +340,7 @@ public class Chain {
 				lo.add(c);// add chain;
 				lo.add(temp.get(5));// add target strand
 				lo.add(c.targetName);
-
+				
 				Interval<List<Object>> i = new Interval<List<Object>>(temp.get(0),temp.get(1),lo);
 				tree.addInterval(i);
 			
@@ -357,7 +357,7 @@ public class Chain {
 		if(!chainIndex.containsKey(chromosome)){
 			throw new ChainException("chain file does not contain chromosome "+chromosome);
 		}
-		IntervalTree<List<Object>> it = chainIndex.get(chromosome) ;
+		IntervalTree<List<Object>> it = chainIndex.get(chromosome);
 		List<Interval<List<Object>>> results = it.get(start, stop);
 		return results;
 	}

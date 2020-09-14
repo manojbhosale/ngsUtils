@@ -2,7 +2,10 @@ package vcfutils;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.EnumSet;
 
 import htsjdk.variant.variantcontext.VariantContext;
@@ -221,14 +224,19 @@ public class CompareUtils {
 				hmvc.add(vcr);
 
 			}
-			
-			File f1 = new File(destinationFolder+"/"+fileOneName+"_common.vcf");
-			File f2 = new File(destinationFolder+"/"+fileOneName+"_snpOld.vcf");
-			File f3 = new File(destinationFolder+"/"+fileOneName+"_insOld.vcf");
-			File f4 = new File(destinationFolder+"/"+fileOneName+"_delOld.vcf");
-			File f5 = new File(destinationFolder+"/"+fileTwoName+"_snpNew.vcf");
-			File f6 = new File(destinationFolder+"/"+fileTwoName+"_insNew.vcf");
-			File f7 = new File(destinationFolder+"/"+fileTwoName+"_delNew.vcf");
+            Date date = new Date();  
+            Timestamp ts=new Timestamp(date.getTime());  
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmssSSS");  
+            String dateFormatted = formatter.format(date);
+
+
+			File f1 = new File(destinationFolder+"/"+fileOneName+"_"+dateFormatted+"_common.vcf");
+			File f2 = new File(destinationFolder+"/"+fileOneName+"_"+dateFormatted+"_snpOld.vcf");
+			File f3 = new File(destinationFolder+"/"+fileOneName+"_"+dateFormatted+"_insOld.vcf");
+			File f4 = new File(destinationFolder+"/"+fileOneName+"_"+dateFormatted+"_delOld.vcf");
+			File f5 = new File(destinationFolder+"/"+fileTwoName+"_"+dateFormatted+"_snpNew.vcf");
+			File f6 = new File(destinationFolder+"/"+fileTwoName+"_"+dateFormatted+"_insNew.vcf");
+			File f7 = new File(destinationFolder+"/"+fileTwoName+"_"+dateFormatted+"_delNew.vcf");
 			f1.createNewFile();
 			f2.createNewFile();
 			f3.createNewFile();

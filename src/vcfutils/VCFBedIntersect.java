@@ -7,7 +7,11 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import htsjdk.samtools.util.CloseableIterator;
 import htsjdk.variant.variantcontext.VariantContext;
@@ -24,16 +28,18 @@ public class VCFBedIntersect {
 
 
 	public static void main(String[] args) {
-		Path inputVcfFile = Paths.get("C:\\Users\\manojkumar_bhosale\\Desktop\\ToDelete_1\\EL_SCS_v6s_XT_Ver_121817_11_S11_R1.fastq_183_VCF_4_2.vcf");
-		Path inputBedFile = Paths.get("D:\\ToDelete\\VCF_test\\SureSelect_Trio_TestDesign_1_AllTracks_covered.bed");
+		Path inputVcfFile = Paths.get("C:\\Users\\manojkumar_bhosale\\OneDrive - Persistent Systems Limited\\AIO_HS2_investigation\\VCFsForIntersection\\input1_20200525183216332_snpOld.vcf");
+		Path inputBedFile = Paths.get("C:\\Users\\manojkumar_bhosale\\OneDrive - Persistent Systems Limited\\AIO_HS2_investigation\\Pos_Dedup\\CAIO18_H1\\CombinedInterval.txt");
 		Path outputVcfFile = Paths.get("C:\\Users\\manojkumar_bhosale\\Desktop\\ToDelete_1\\");
 
-		try {
+		/*try {
 			intersectBedAndVCF(inputVcfFile, inputBedFile, outputVcfFile);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
+		
+		simpleItersect(inputVcfFile, inputBedFile, outputVcfFile);
 
 	}
 
@@ -94,6 +100,81 @@ public class VCFBedIntersect {
 
 
 
+	}
+	
+	public static void simpleItersect(Path vcfPath, Path bedPath, Path outputFolder) {
+		
+		
+
+
+		//tempFile = VCFUtils.createTemporaryIndexedVcfFromInput(vcfPath.toFile(), "temp");
+		
+
+
+		//VCFEncoder vcfEncoder = new VCFEncoder(reader.getFileHeader(), true, true);
+		//final VariantContextWriter pwCommon = new VariantContextWriterBuilder().setReferenceDictionary(outputHeader.getSequenceDictionary()).setOutputFile(f1).setOptions(options).setOutputFileType(OutputType.VCF).build();
+	
+		Map<String,List<Integer>> intervalMap = new HashMap<>();
+		
+		try(BufferedReader br = new BufferedReader(new FileReader(bedPath.toFile()))){
+			String line = "";
+			//pw.println(reader.getFileHeader());
+			while((line = br.readLine()) != null) {
+				if(line.startsWith("#")) {
+					continue;
+				}
+				String[] splited = line.split("\t");
+				String chromosome = splited[0];
+				Integer start = Integer.parseInt(splited[1]);
+				Integer stop = Integer.parseInt(splited[2]);
+				List<Integer> tempLi = new ArrayList<>();
+				tempLi.add(start);
+				tempLi.add(stop);
+				
+				if(intervalMap.containsKey(chromosome)) {
+					List<Integer> intervals = intervalMap.get(chromosome);
+					intervals.add(start);
+					intervals.add(stop);
+				}else {
+					List<Integer> intervals = new ArrayList<>();
+					intervals.add(start);
+					intervals.add(stop);
+					intervalMap.put(chromosome, intervals);
+				}
+			}
+
+			//vcfWriter.close();
+
+		}catch(IOException e) {
+			e.printStackTrace();
+		}
+		
+		VCFFileReader reader = new VCFFileReader(vcfPath,false);
+		
+		
+		CloseableIterator<VariantContext> iterator = reader.iterator();
+		int total = 0;
+		int intersecting  = 0;
+		while(iterator.hasNext()) {
+			total++;
+			VariantContext context = iterator.next();
+			int pos = context.getStart();
+			if(intervalMap.containsKey(context.getContig())) {
+				List<Integer> intervals = intervalMap.get(context.getContig());
+				for (int i = 0; i < intervals.size(); i=i+2) {
+					if(pos >= intervals.get(i) && pos <= intervals.get(i+1)) {
+						intersecting++;
+						break;
+					}
+				}
+			}
+			
+		}
+
+		
+		System.out.println(vcfPath.getFileName()+"\tTotal="+total+"\tIntersecting="+intersecting);
+		
+		
 	}
 
 }
