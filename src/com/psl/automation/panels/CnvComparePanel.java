@@ -17,10 +17,9 @@ import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import bedUtils.BedUtils;
-import vcfutils.CompareUtils;
-import vcfutils.ComparisonResult;
+import cnv_compare.CnvCompare;
 
-public class BedUtilitiesPanel {
+public class CnvComparePanel {
 
 	JPanel vcfComparePanel = new JPanel();
 	// JComboBox modeCombo = new JComboBox();
@@ -29,12 +28,12 @@ public class BedUtilitiesPanel {
 	JButton folder;
 	JButton compare;
 
-	JTextField bedOneField;
-	JTextField bedTwoField;
+	JTextField cnvOneField;
+	JTextField cnvTwoField;
 	JTextField folderField;
 
-	File bedOnePath;
-	File bedTwoPath;
+	File cnvOnePath;
+	File cnvTwoPath;
 	File folderPath;
 	
 	JPanel selection = new JPanel();
@@ -46,8 +45,8 @@ public class BedUtilitiesPanel {
 	JPanel pathPanel = new JPanel();
 	JPanel comparePanel = new JPanel();
 
-	CompareUtils vcfCompareUtil = new CompareUtils();
-	ComparisonResult result;
+	//CompareUtils vcfCompareUtil = new CompareUtils();
+	//ComparisonResult result;
 
 	File lastPath;
 	
@@ -95,7 +94,7 @@ public class BedUtilitiesPanel {
 			"MissedInsertions", "NewInsertions", "MissedDeletions",
 			"NewDeletions" }, 0);*/
 
-	public JPanel createIntersectBedPanel() {
+	public JPanel createCnvComparePanel() {
 		vcfComparePanel.setLayout(new BoxLayout(vcfComparePanel,
 				BoxLayout.PAGE_AXIS));
 
@@ -137,10 +136,10 @@ public class BedUtilitiesPanel {
 		 */
 
 		JLabel vcfOne = new JLabel();
-		vcfOne.setText("Select BED A:");
+		vcfOne.setText("Select CNV segments File1:");
 		vcfOne.add(Box.createVerticalGlue());
 		JLabel bedlabel = new JLabel();
-		bedlabel.setText("Select BED B:");
+		bedlabel.setText("Select CNV segments File2:");
 		bedlabel.add(Box.createVerticalGlue());
 		JLabel folderLabel = new JLabel();
 		folderLabel.setText("Output Folder:");
@@ -165,22 +164,22 @@ public class BedUtilitiesPanel {
 				buttonPanel.add(Box.createVerticalStrut(10));
 				Compare();
 				
-				bedOneField = new JTextField();
-				bedOneField.setEditable(false);
-				bedOneField.setPreferredSize(new Dimension(450,30));
+				cnvOneField = new JTextField();
+				cnvOneField.setEditable(false);
+				cnvOneField.setPreferredSize(new Dimension(450,30));
 
-				bedTwoField = new JTextField();
-				bedTwoField.setPreferredSize(new Dimension(450,30));
-				bedTwoField.setEditable(false);
+				cnvTwoField = new JTextField();
+				cnvTwoField.setPreferredSize(new Dimension(450,30));
+				cnvTwoField.setEditable(false);
 				
 				folderField = new JTextField();
 				folderField.setPreferredSize(new Dimension(450,30));
 				folderField.setEditable(false);
 				
 				pathPanel.add(Box.createVerticalStrut(15));
-				pathPanel.add(bedOneField);
+				pathPanel.add(cnvOneField);
 				pathPanel.add(Box.createVerticalStrut(15));
-				pathPanel.add(bedTwoField);
+				pathPanel.add(cnvTwoField);
 				pathPanel.add(Box.createVerticalStrut(15));
 				pathPanel.add(folderField);
 				
@@ -219,16 +218,16 @@ public class BedUtilitiesPanel {
 				JFileChooser jfile = new JFileChooser();
 				jfile.setCurrentDirectory(lastPath);
 				
-				String[] extensions = { "BED" };
+				String[] extensions = { "TXT","BED" };
 				FileNameExtensionFilter extensionFilter = new FileNameExtensionFilter(
-						"BED", extensions);
+						"TXT,BED", extensions);
 				jfile.setFileFilter(extensionFilter);
 				int returnValue = jfile.showOpenDialog(vcfComparePanel);
 
 				if (returnValue == JFileChooser.APPROVE_OPTION) {
-					bedOnePath = jfile.getSelectedFile();
-					bedOneField.setText(bedOnePath.getAbsolutePath());
-					lastPath = new File(bedOnePath.getAbsolutePath());
+					cnvOnePath = jfile.getSelectedFile();
+					cnvOneField.setText(cnvOnePath.getAbsolutePath());
+					lastPath = new File(cnvOnePath.getAbsolutePath());
 					// This is where a real application would open the file.
 					// log.append("Opening: " + file.getName() + "." + newline);
 				} else {
@@ -251,16 +250,16 @@ public class BedUtilitiesPanel {
 				JFileChooser jfile = new JFileChooser();
 				jfile.setCurrentDirectory(lastPath);
 
-				String[] extensions = { "BED" };
+				String[] extensions = { "TXT","BED" };
 				FileNameExtensionFilter extensionFilter = new FileNameExtensionFilter(
-						"BED", extensions);
+						"TXT,BED", extensions);
 				jfile.setFileFilter(extensionFilter);
 				int returnValue = jfile.showOpenDialog(vcfComparePanel);
 
 				if (returnValue == JFileChooser.APPROVE_OPTION) {
-					bedTwoPath = jfile.getSelectedFile();
-					bedTwoField.setText(bedTwoPath.getAbsolutePath());
-					lastPath = new File(bedTwoPath.getAbsolutePath());
+					cnvTwoPath = jfile.getSelectedFile();
+					cnvTwoField.setText(cnvTwoPath.getAbsolutePath());
+					lastPath = new File(cnvTwoPath.getAbsolutePath());
 					// This is where a real application would open the file.
 					// log.append("Opening: " + file.getName() + "." + newline);
 				} else {
@@ -281,9 +280,9 @@ public class BedUtilitiesPanel {
 
 			public void actionPerformed(ActionEvent e) {
 				
-					if (bedOnePath != null && bedTwoPath != null) {
-						BedUtils.intersectBedFilesToFolder(bedOnePath,
-								bedTwoPath,folderPath);
+					if (cnvOnePath != null && cnvTwoPath != null) {
+						CnvCompare.compareCnvFilesToFolder(cnvOnePath,
+								cnvTwoPath,folderPath.toPath());
 						
 					} 
 

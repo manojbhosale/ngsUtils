@@ -1,7 +1,5 @@
 package liftoverutils;
 
-import java.util.List;
-
 public class Interval<Type> implements Comparable<Interval<Type>>
 {
 

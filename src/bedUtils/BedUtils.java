@@ -1,5 +1,4 @@
 package bedUtils;
-import java.beans.IntrospectionException;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -7,14 +6,16 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import liftoverutils.*;
+import liftoverutils.BedInterval;
+import liftoverutils.Interval;
+import liftoverutils.IntervalTree;
+import liftoverutils.IntervalUtils;
 
 public class BedUtils {
 

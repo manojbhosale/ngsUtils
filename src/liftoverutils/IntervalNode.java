@@ -8,7 +8,7 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.Map.Entry;
 
-class IntervalNode<Type> {
+public class IntervalNode<Type> {
 
 	private SortedMap<Interval<Type>, List<Interval<Type>>> intervals;
 	private long center;

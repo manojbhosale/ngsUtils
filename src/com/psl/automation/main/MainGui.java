@@ -1,12 +1,7 @@
 package com.psl.automation.main;
 
-import hsutils.BamSorter;
-
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -39,10 +34,13 @@ import org.apache.log4j.Logger;
 
 import com.psl.automation.panels.BarcodeMetricsPanel;
 import com.psl.automation.panels.BedUtilitiesPanel;
+import com.psl.automation.panels.CnvComparePanel;
 import com.psl.automation.panels.CompareVcfPanel;
 import com.psl.automation.panels.QCComparePanel;
 import com.psl.automation.panels.TsTvMetricsPanel;
 import com.psl.automation.panels.VcfBedIntersectionPanel;
+
+import hsutils.BamSorter;
 
 public class MainGui implements ActionListener,Runnable{
 	//Log4j logger
@@ -81,12 +79,14 @@ public class MainGui implements ActionListener,Runnable{
 		QCComparePanel qcp = new QCComparePanel();
 		VcfBedIntersectionPanel vbedp = new VcfBedIntersectionPanel();
 		BedUtilitiesPanel bup = new BedUtilitiesPanel();
+		CnvComparePanel ccp = new CnvComparePanel();
 		jtp.addTab("VCF comparator", cvp.createCompareVcfPanel());
 		jtp.addTab("HS Util", bmp.createFileConfigPanel());
 		jtp.addTab("VCF Util", tstvp.createVcfUtilPanel());
 		jtp.addTab("QC compare", qcp.createCompareQcPanel());
 		jtp.addTab("VCF BED intersect", vbedp.createIntersectVcfPanel());
 		jtp.addTab("BED intersect", bup.createIntersectBedPanel());
+		jtp.addTab("CNV intersect", ccp.createCnvComparePanel());
 		
 		jtp.addChangeListener(new TabSelected());
 		
